@@ -1,0 +1,61 @@
+<div class="dashboard-layout">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="dashboard-buttons">
+                <div class="mb-3">
+                    <a href="/users" class="dashboard-btn">
+                        <div class="btn-content">
+                            <i class="fas fa-users fa-3x"></i>
+                            <h3>Manage Users</h3>
+                        </div>
+                    </a>
+                </div>
+                <div>
+                    <a href="/classes" class="dashboard-btn">
+                        <div class="btn-content">
+                            <i class="fas fa-chalkboard-teacher fa-3x"></i>
+                            <h3>Manage Classes</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <!-- Weather Widget -->
+            <div class="weather-widget">
+                <h3>Current Weather</h3>
+                <div class="weather-info">
+                    <img id="weather-icon" src="" alt="Weather Icon" />
+                    <div id="weather-info"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fetch weather data from the back-end
+    fetch('/weather')
+        .then((response) => response.json())
+        .then((data) => {
+            const weatherInfo = document.getElementById('weather-info');
+            const weatherIcon = document.getElementById('weather-icon');
+            if (data.error) {
+                weatherInfo.innerHTML = `<p>${data.error}</p>`;
+            } else {
+                const { name, main, weather } = data;
+                weatherInfo.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>${weather[0].description}</p>
+                    <p>Temperature: ${main.temp}°C</p>
+                    <p>Humidity: ${main.humidity}%</p>
+                `;
+                weatherIcon.src = `https://openweathermap.org/img/wn/${weather[0].icon}@4x.png`;
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            document.getElementById('weather-info').innerHTML = `<p>Failed to load weather data.</p>`;
+        });
+</script>

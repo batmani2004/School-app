@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="/js/app.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <h3>School App</h3>
+        <a href="/"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/profile"><i class="fas fa-id-card"></i> My Profile</a>
+        
+        <!-- Users menu visible to admin role -->
+        {{#if (ifEquals currentUser.role 'admin')}}
+        <a href="/users"><i class="fas fa-users"></i> Users</a>
+        {{/if}}
+
+        <!-- Classes menu visible to admin and teacher roles -->
+        {{#if (ifOr (ifEquals currentUser.role 'admin') (ifEquals currentUser.role 'teacher'))}}
+        <a href="/classes"><i class="fas fa-chalkboard"></i> Classes</a>
+        {{/if}}
+
+        <form action="/logout" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-link text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
+
+    <!-- Main content -->
+    <div class="content" id="content">
+        <!-- Header -->
+        <div class="header">
+            <i id="menuIcon" class="fas fa-bars menu-icon"></i>
+            <h4>Welcome, {{currentUser.first_name}} {{currentUser.last_name}}</h4>
+            <h5 class="pull-right">Your role is {{currentUser.role}}</h5>
+        </div>
+
+        <!-- Page content -->
+        <div class="content-body">
+            {{{body}}}
+        </div>
+    </div>
+</body>
+</html>

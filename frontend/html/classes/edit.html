@@ -1,0 +1,44 @@
+<h2>Edit Class: {{class.name}}</h2>
+
+<!-- Error Messages -->
+{{#if errorMessage}}
+<div class="alert alert-danger">{{errorMessage}}</div>
+{{/if}}
+
+<!-- Success Messages -->
+{{#if successMessage}}
+<div class="alert alert-success">{{successMessage}}</div>
+{{/if}}
+
+<form action="/classes/{{class.id}}/update" method="POST">
+    <div class="form-group">
+        <label for="name">Class Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{class.name}}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required>{{class.description}}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="credits">Credits</label>
+        <input type="number" class="form-control" id="credits" name="credits" value="{{class.credits}}" required>
+    </div>
+
+    {{#if (ifEquals currentUser.role 'admin')}}
+    <div class="form-group">
+        <label for="teacher_id">Teacher</label>
+        <select class="form-control" id="teacher_id" name="teacher_id" required>
+            {{#each teachers}}
+                <option value="{{this.id}}" {{#if (ifEquals this.id ../class.teacher_id)}}selected{{/if}}>{{this.first_name}} {{this.last_name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{else}}
+    <input type="hidden" id="teacher_id" name="teacher_id" value="{{currentUser.id}}" />
+    {{/if}}
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="/classes" class="btn btn-secondary">Back to Classes</a>
+</form>

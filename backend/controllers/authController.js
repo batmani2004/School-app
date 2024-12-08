@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
         }
 
         // Create the new user
-        User.createUser(first_name, last_name, email, password, (err, results) => {
+        User.createUser(first_name, last_name, email, password,'student', (err, results) => {
             if (err) {
                 return res.status(500).send('Database error');
             }

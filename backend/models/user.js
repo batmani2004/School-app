@@ -60,17 +60,32 @@ class User {
     }
     
     static updateUserById(user_id, userData, callback) {
-        const query = `
-            UPDATE users 
-            SET first_name = ?, last_name = ?, email = ?, role = ? 
-            WHERE id = ?
-        `;
-        const { first_name, last_name, email, role } = userData;
+        
+        const { first_name, last_name, email, role, password } = userData;
 
-        db.query(query, [first_name, last_name, email, role, user_id], (err, results) => {
-            if (err) return callback(err);
-            callback(null, results);
-        });
+        if (password) {
+            const query = `
+                UPDATE users 
+                SET first_name = ?, last_name = ?, email = ?, role = ?, password = ?
+                WHERE id = ?
+            `;
+            
+            db.query(query, [first_name, last_name, email, role, password, user_id], (err, results) => {
+                if (err) return callback(err);
+                callback(null, results);
+            });
+        } else {
+            const query = `
+                UPDATE users 
+                SET first_name = ?, last_name = ?, email = ?, role = ? 
+                WHERE id = ?
+            `;
+            
+            db.query(query, [first_name, last_name, email, role, user_id], (err, results) => {
+                if (err) return callback(err);
+                callback(null, results);
+            });
+        }
     }
     
     static deleteById(user_id, callback) {

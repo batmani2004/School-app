@@ -1,4 +1,3 @@
-# Rename this to the name of your database
 USE school_app;
 
 CREATE TABLE `sessions` (

@@ -51,18 +51,26 @@ exports.updateProfile = (req, res) => {
 
 exports.updateUser = (req, res) => {
     const {id} = req.params;
-    const { first_name, last_name, email, role } = req.body;
+    const { first_name, last_name, email, role, password, confirm_password } = req.body;
 
     if (!first_name || !last_name || !email || !role) {
-        return res.status(400).render('editUser', {
+        return res.status(400).render('users/edit', {
             title: 'Edit User',
-            errorMessage: 'All fields are required.',
+            errorMessage: 'These fields are required: First Name, Last Name, Email, Role.',
+            user: { id, first_name, last_name, email, role }
+        });
+    }
+    
+    if (password && password !== confirm_password) {
+        return res.status(400).render('users/edit', {
+            title: 'Edit User',
+            errorMessage: 'Passwords do not match!',
             user: { id, first_name, last_name, email, role }
         });
     }
 
     // Update the user
-    User.updateUserById(id, { first_name, last_name, email, role }, (err, result) => {
+    User.updateUserById(id, { first_name, last_name, email, role, password }, (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).render('users/edit', {

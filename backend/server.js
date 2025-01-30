@@ -78,13 +78,20 @@ const isAuthenticated = (req, res, next) => {
         return next();
     }
     
-    res.redirect("/login");
+    res.redirect('/');
 };
 
 // Add routes here
+app.get('/', (req, res) => {
+    res.render('landing', {
+        layout: 'landing',
+        title: 'My School'
+    });
+});
+
 app.get("/login", (req, res) => {
     if (req.session && req.session.user) {
-        return res.redirect('/');
+        return res.redirect('/dashboard');
     }
     
     res.render('login', {
@@ -95,7 +102,7 @@ app.get("/login", (req, res) => {
 
 app.get('/signup', (req, res) => {
     if (req.session && req.session.user) {
-        return res.redirect('/');
+        return res.redirect('/dashboard');
     }
     
     res.render('signup', {
@@ -108,7 +115,7 @@ app.post('/signup', authController.signup);
 
 app.post('/login', authController.login);
 
-app.get("/", isAuthenticated, (req, res) => {
+app.get('/dashboard', isAuthenticated, (req, res) => {
     const currentUser = req.session.user;
     
     if (currentUser.role === 'admin') {
@@ -142,7 +149,7 @@ app.get("/", isAuthenticated, (req, res) => {
 
 app.post("/logout", isAuthenticated, (req, res) => {
     req.session.destroy(() => {
-        res.redirect("/login");
+        res.redirect('/');
     });
 });
 

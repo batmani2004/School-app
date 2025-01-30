@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
         }
 
         // Create the new user
-        User.createUser(first_name, last_name, email, password,'student', (err, results) => {
+        User.createUser(first_name, last_name, email, password, 'student', (err, results) => {
             if (err) {
                 return res.status(500).send('Database error');
             }
@@ -55,7 +55,7 @@ exports.signup = (req, res) => {
                 req.session.user = user;
 
                 // Redirect to the dashboard
-                res.redirect('/');
+                res.redirect('/dashboard');
             });
         });
     });
@@ -104,6 +104,6 @@ exports.login = (req, res) => {
         req.session.user = user;
 
         // Redirect to the dashboard
-        res.redirect('/');
+        res.redirect('/dashboard');
     });
 };

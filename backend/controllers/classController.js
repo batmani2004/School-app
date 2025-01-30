@@ -36,6 +36,8 @@ exports.createClass = (req, res) => {
     });
 };
 
+//editing an existing class
+
 exports.editClass = (req, res) => {
     const classId = req.params.id; 
 
@@ -103,7 +105,7 @@ exports.updateClass = (req, res) => {
 
 exports.deleteClass = (req, res) => {
     const { id } = req.params;
-
+//extracts the class ID from request parameters
     Class.deleteById(id, (err, result) => {
         if (err) {
             console.error(err);

@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-exports.updateProfile = (req, res) => {
+exports.updateProfile = (req, res) => { //current logged-in user
     const {first_name, last_name, email, password, confirm_password} = req.body;
 
     if (password && password !== confirm_password) {
@@ -88,6 +88,7 @@ exports.updateUser = (req, res) => {
             });
         }
 
+        //retriving updated user data
         User.getUserById(id, (err, user) => {
             if (err) {
                 console.error(err);
